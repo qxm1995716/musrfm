@@ -2,9 +2,7 @@ The workflow of Sentinel-2 L2A fusion and download. In our research, we use GEE 
 
 The requirements are as follows: <br>
 (1) The Google account to log in GEE platform.  <br>
-(2) The coordinate of the target area.   <br>
-(3) Some key parameters, including:   <br>
-[a] Target area coordinates, or you can create a new layer and draw the rectangle area;   <br>
-[b] The threshold for cloud, defalut is 10 and you can adapt it to get the most staisfied fused imagery.   <br>
+(2) Target area coordinates, or you can create a new layer and draw the rectangle area.  <br>
+(3) The threshold for cloud, defalut is 10 and you can adapt it to get the most staisfied fused imagery.   <br>
 
-In ./gee script/, we provide a templete to create and export the fused L2A imagery to the google drive, you can modify it and get your own data.
+In **./gee script/**, we provide a templete to create and export the fused L2A imagery to the google drive, you can modify it and get your own data.
