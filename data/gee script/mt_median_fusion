@@ -1,12 +1,14 @@
 // ### This is the script of obtain median fusion of L2A data from GEE ###
 // Copying the follow code to GEE and runing it. It should be noted that the projection for export is set to be EPSG: 32620 (UTM Zone 20 N).
 
+// first, set the roi to get the L2A imagery.
 var roi = [[-65.08362624703011,17.550252016985528]
           ,[-64.38874099312386,17.550252016985528]
           ,[-64.38874099312386,17.90082088110487]
           ,[-65.08362624703011,17.90082088110487]
           ,[-65.08362624703011,17.550252016985528]]
 
+// if you determine the roi by draw rectangle on GEE, here should be * var G = xxxx * while xxxx is the layer's name.
 var G = ee.Geometry.Polygon(roi);
 
 // Since the L2A has SCL product, so we use this layer to remove clouds. It is worthing noting that 
@@ -24,7 +26,7 @@ function image_visualize(image){
   return img.divide(10000);
 }
 
-// get the L2A imagery from this period.
+// get the L2A imagery from this period by setting the date.
 var dataset = ee.ImageCollection('COPERNICUS/S2_SR')
                   .filter(ee.Filter.lt('CLOUDY_PIXEL_PERCENTAGE',10))
                   .filterDate('2018-01-01', '2022-01-01')
