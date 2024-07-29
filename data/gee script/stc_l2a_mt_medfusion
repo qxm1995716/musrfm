@@ -1,5 +1,5 @@
 // ### This is the script of obtain median fusion of L2A data from GEE ###
-// Copying the follow code to GEE and runing it.
+// Copying the follow code to GEE and runing it. It should be noted that the projection for export is set to be EPSG: 32620 (UTM Zone 20 N).
 
 var roi = [[-65.08362624703011,17.550252016985528]
           ,[-64.38874099312386,17.550252016985528]
