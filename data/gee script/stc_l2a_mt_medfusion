@@ -1,4 +1,6 @@
 // ### This is the script of obtain median fusion of L2A data from GEE ###
+// Copying the follow code to GEE and runing it.
+
 var roi = [[-65.08362624703011,17.550252016985528]
           ,[-64.38874099312386,17.550252016985528]
           ,[-64.38874099312386,17.90082088110487]
@@ -30,7 +32,7 @@ var dataset = ee.ImageCollection('COPERNICUS/S2_SR')
                   .filterBounds(G)
                   .map(SCL_maskS2clouds);
 
-// get all bands except SCL
+// get all spactral bands
 dataset = dataset.select(['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8', 'B8A', 'B9', 'B11', 'B12'])
 
 // get the number of sence used
