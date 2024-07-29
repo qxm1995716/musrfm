@@ -5,4 +5,4 @@ The requirements are as follows: <br>
 (2) Target area coordinates, or you can create a new layer and draw the rectangle area.  <br>
 (3) The threshold for cloud, defalut is 10 and you can adapt it to get the most staisfied fused imagery.   <br>
 
-In **./gee script/**, we provide a templete to create and export the fused L2A imagery to the google drive, you can modify it and get your own data.
+In **get_fused_sr_data**, we provide a templete to create and export the fused L2A imagery to the google drive, you can modify it and get your own data.
