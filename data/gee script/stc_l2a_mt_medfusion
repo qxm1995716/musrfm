@@ -9,8 +9,8 @@ var roi = [[-65.08362624703011,17.550252016985528]
 
 var G = ee.Geometry.Polygon(roi);
 
-// Since the L2A has SCL product, so we use this layer to remove clouds and obtain the final SR value by scale 10000. 
-// It is worthing noting that since we use data collection 'COPERNICUS/S2_SR', the conversion from DN to SR is obtained 
+// Since the L2A has SCL product, so we use this layer to remove clouds. It is worthing noting that 
+// since we use data collection 'COPERNICUS/S2_SR', the conversion from DN to SR is obtained 
 // by divided by 10000. 
 function SCL_maskS2clouds(image){
   var scl = image.select('SCL');
