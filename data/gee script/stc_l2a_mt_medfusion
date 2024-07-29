@@ -1,1 +1,59 @@
+// ### This is the script of obtain median fusion of L2A data from GEE ###
+var roi = [[-65.08362624703011,17.550252016985528]
+          ,[-64.38874099312386,17.550252016985528]
+          ,[-64.38874099312386,17.90082088110487]
+          ,[-65.08362624703011,17.90082088110487]
+          ,[-65.08362624703011,17.550252016985528]]
 
+var G = ee.Geometry.Polygon(roi);
+
+// Since the L2A has SCL product, so we use this layer to remove clouds and obtain the final SR value by scale 10000. 
+// It is worthing noting that since we use data collection 'COPERNICUS/S2_SR', the conversion from DN to SR is obtained 
+// by divided by 10000. 
+function SCL_maskS2clouds(image){
+  var scl = image.select('SCL');
+  var clear_sky_pixels = scl.eq(4).or(scl.eq(5)).or(scl.eq(6)).or(scl.eq(11));
+      return image.updateMask(clear_sky_pixels).divide(10000);
+}
+
+// visualization
+function image_visualize(image){
+  var img = image;
+  return img.divide(10000);
+}
+
+// get the L2A imagery from this period.
+var dataset = ee.ImageCollection('COPERNICUS/S2_SR')
+                  .filter(ee.Filter.lt('CLOUDY_PIXEL_PERCENTAGE',10))
+                  .filterDate('2018-01-01', '2022-01-01')
+                  //.filter(ee.Filter.neq('bandName', ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8', 'B8A', 'B9', 'B11', 'B12', 'SCL']))
+                  .filterBounds(G)
+                  .map(SCL_maskS2clouds);
+
+// get all bands except SCL
+dataset = dataset.select(['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8', 'B8A', 'B9', 'B11', 'B12'])
+
+// get the number of sence used
+var List = dataset.toList(dataset.size());
+print(List);
+
+// the configuration for visualize the RGB bands of L2A imagery, with min value is 0.0 and max value is 0.3.
+var visualization = {
+  min: 0.0,
+  max: 0.3,
+  bands: ['B4', 'B3', 'B2'],
+};
+Map.addLayer(dataset.median().clip(G), visualization, 'RGB');
+// perform median fusion
+var median_image = dataset.median().clip(G);
+
+// export the data
+Export.image.toDrive({
+  image: median_image.select(['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8', 'B8A', 'B9', 'B11', 'B12']),
+  description: 'STC_MED',
+  folder: 'TEST',
+  region: G,
+  skipEmptyTiles: true, 
+  scale: 10,
+  maxPixels: 1e13
+})
