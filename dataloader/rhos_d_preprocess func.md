@@ -36,21 +36,26 @@ Here, the **load_rhos_gt()** not only extract data from .tif file, but also repr
 ```
     b8mask, b8mask_dt = B8mask(rhos, thres)
 ```
-The b8mask is the WLM and b8mask is the DtCM (b8mask_dt).<br>
+The b8mask is the WLM and b8mask is the DtCM (b8mask_dt).<br><br>
 5). Removing abnoral elevations based on the obtained WLM and DtCM 
 ```
     # correct the coastal line dems by CORRECT_DBM function, obtain the updated elev and WLM mask
     elev, update_b8mask = CORRECT_DBM(b8mask_dt, b8mask, elev)
-    # another MultiStep_MaskRefine is applied, since the WLM has been updated in above process
+    # MultiStep_MaskRefine is applied, since the WLM has been updated in above process
     update_b8mask = MultiStep_MaskRefine(update_b8mask)
     # get the DtCM of update_b8mask
     reverse_b8mask = (1 - update_b8mask).astype(np.uint8)
     update_dt = cv2.distanceTransform(reverse_b8mask, distanceType=cv2.DIST_L2, maskSize=5)
-
+```
+6). Geting the update DEM via masking by WLM: <br>
+```
     # obtained the update_dem (elev that have been updated) by the mask of update_b8mask
     update_dem = np.ones([elev.shape[0], elev.shape[1]]) * -111111
     update_dem[update_b8mask == 0] = elev[update_b8mask == 0]
+```
 
+7). Perfoming MAD on the updated DEM to remove some abnormal pixels in the map. 
+```
     # get the valid gts, as a sequence
     valid_gts = update_dem[update_dem != -111111]
 
@@ -69,7 +74,9 @@ The b8mask is the WLM and b8mask is the DtCM (b8mask_dt).<br>
         # these indexes are used to set these values into -111111 (ndv)
         r_idx = remove_coords[1][idx]
         highest_groups[r_idx] = -111111
-
+```
+8). Obtaining the max elevation (<sub>H</sub>L) in the filtered DEM.
+```
     # get the max elevation
     max_elev = np.max(highest_groups)
     update_dem[update_dem > max_elev] = -111111
