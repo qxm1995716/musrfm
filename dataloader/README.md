@@ -18,7 +18,7 @@ This function has 8 parameters that need to be manual set, including: <br>
 ```
     rhos, elev, extent, proj = load_rhos_gt(raster_path, dem_path, mask_path, nan_filter=nan_filter)
 ```
-Here, the **load_rhos_gt** not only extract data from .tif file, but also reproject DEM (dem path) and MASK (mask_path) with the L2A (raster_paht) as reference. It located in the line 287 in the basic_module.py. <br><br>
+Here, the **load_rhos_gt()** not only extract data from .tif file, but also reproject DEM (dem path) and MASK (mask_path) with the L2A (raster_paht) as reference. It located in the line 287 in the basic_module.py. <br><br>
 3). Filtering the pixels that contain at least one invalid value (for safety, can be removed):
 ```
     valid_rhos = np.zeros([rhos.shape[0], rhos.shape[1]])
