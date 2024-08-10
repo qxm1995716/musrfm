@@ -61,19 +61,4 @@ def rhos_d_preprocess(raster_path, dem_path, mask_path, thres, n=500, nan_filter
     dbm = copy.deepcopy(update_dem)
     del update_dem
     print("The data have processed, and the maximum elevation selected is: %.4f" % max_elev)
-
-    # if these processed raster needed to output, if output, it will add with "_RMDB_MAXE_XXXXX(max elevation).tif"
-    if is_output:
-        if PATH is None:
-            update_rhos_path = update_rhos_path + '_RMDB_MAXE_' + str(round(max_elev, 4)) + '.tif'
-        else:
-            if not os.path.exists(PATH):
-                os.mkdir(PATH)
-            update_rhos_path = PATH + '/' + update_rhos_path.split('/')[-1] + '_RMDB_MAXE_' + \
-                               str(round(max_elev, 4)) + '.tif'
-        # this data contain [R: rhos M: mask, D: DtCM, B: Bathymetry] -> RMDB
-        raster_output(update_rhos_path, [rhos, update_b8mask, update_dt, dbm], extent=extent, proj=proj)
-
-    else:
-        return rhos, update_b8mask, update_dt, dbm, extent, proj
 ```
