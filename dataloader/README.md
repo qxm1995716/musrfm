@@ -32,10 +32,12 @@ Here, the **load_rhos_gt()** not only extract data from .tif file, but also repr
     # set the non-valid pixels in elevations as -111111, which is used to label invalid pixels
     elev[nvd_coords] = -111111
 ```
-4). Geting the WLM (Water-Land Mask) by perform binary threshold:
+4). Geting the WLM (Water-Land Mask) and DtCM (Distance to Cosat Map) by perform binary threshold:
 ```
     b8mask, b8mask_dt = B8mask(rhos, thres)
 ```
+The b8mask is the WLM and b8mask is the DtCM (b8mask_dt).<br>
+5). Removing abnoral elevations based on the obtained WLM and DtCM 
 ```
     # correct the coastal line dems by CORRECT_DBM function, obtain the updated elev and WLM mask
     elev, update_b8mask = CORRECT_DBM(b8mask_dt, b8mask, elev)
