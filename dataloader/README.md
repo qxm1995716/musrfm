@@ -1,13 +1,89 @@
 Here, the data preprocessing can be roughly devided into two parts, **Sentinel-2 L2A data processing** and **conversion from DEM to DBM**. The code for it can be found in the ./data_reader.py. <br>
+**1.Sentinel-2 L2A data processing** <br>
 ```
-active_region = reproject_aligned(element['rhos'], element['active_region'])
-active_region = active_region == -111111
-rhos, wlm, dt, dbm, extent, proj = read_rmdb(element['rhos'], c_num)
-dbm[active_region] = -111111
-mask = reproject_aligned(element['rhos'], element['mask'])
-mask = mask != -111111
-rhos, interpolated_v = invalid_pixels_fixed(rhos, mask, ndv=-111111.)  # get the filled rhos data
-data = np.concatenate([rhos, wlm[:, :, None], dt[:, :, None]], axis=-1)  # added with other 2 channel
-data = data.astype(np.float32)
-data = padding_function_original(data, mask, self.radius, max_scale_factor=max_scale, interpolated_v=None)
+def rhos_d_preprocess(raster_path, dem_path, mask_path, thres, n=500, nan_filter=True, is_output=True, PATH=None):
+    r"""
+    :param raster_path: the path for the rhos raster -> string
+    :param dem_path: the path for the dem raster -> string
+    :param mask_path: the path for the mask raster -> string
+    :param thres: the threshold value for the b8mask function
+    :param n: the top n elevations in the processed dem are performed MAD outlier detection program -> int
+    :param nan_filter: perform interpolation for invalid pixel -> bool
+    :param is_output: do the processed data output as a file -> bool
+    :param PATH: the path for the output of processed data, if it is None, its path is the directory of raster -> string
+    :return:
+    """
+    rhos, elev, extent, proj = load_rhos_gt(raster_path, dem_path, mask_path, nan_filter=nan_filter)
+    # get the file name of raster, for further output
+    update_rhos_path = raster_path.split('.')[0]
+    # the valid_rhos is used to construct a bool mask for invalid pixels, if there is an abnormal value in one pixel,
+    # then this pixel will be marked as invalid
+    valid_rhos = np.zeros([rhos.shape[0], rhos.shape[1]])
+    # channel by channel, to find the invalid pixels
+    for iidx in range(rhos.shape[-1]):
+        valid_rhos += rhos[:, :, iidx] > 0
+    valid_rhos = valid_rhos // rhos.shape[-1]  # only the pixel of 1 is completely valid for every channel
+    valid_rhos = valid_rhos.astype(bool)
+    # convert to bool matrix
+    nvd_coords = (1 - valid_rhos).astype(bool)
+    # set the non-valid pixels in elevations as -111111, which is used to label invalid pixels
+    elev[nvd_coords] = -111111
+
+    # perform binary threshold algorithm to obtain b8mask and b8mask_dt
+    b8mask, b8mask_dt = B8mask(rhos, thres)
+    # correct the coastal line dems by CORRECT_DBM function, obtain the updated elev and WLM mask
+    elev, update_b8mask = CORRECT_DBM(b8mask_dt, b8mask, elev)
+    # another MultiStep_MaskRefine is applied, since the WLM has been updated in above process
+    update_b8mask = MultiStep_MaskRefine(update_b8mask)
+    # get the DtCM of update_b8mask
+    reverse_b8mask = (1 - update_b8mask).astype(np.uint8)
+    update_dt = cv2.distanceTransform(reverse_b8mask, distanceType=cv2.DIST_L2, maskSize=5)
+
+    # obtained the update_dem (elev that have been updated) by the mask of update_b8mask
+    update_dem = np.ones([elev.shape[0], elev.shape[1]]) * -111111
+    update_dem[update_b8mask == 0] = elev[update_b8mask == 0]
+
+    # get the valid gts, as a sequence
+    valid_gts = update_dem[update_dem != -111111]
+
+    # sort the valid_gts
+    valid_gts_sorted = np.sort(valid_gts)
+    # reverse the valid_gts_sorted and get the top n samples
+    valid_gts_sorted = valid_gts_sorted[::-1]
+    highest_groups = valid_gts_sorted[:n]
+    # construct a temp coordinates
+    coords = [np.zeros([n]), np.arange(n)]
+
+    # use the MAD to detect outliers
+    remove_coords, median, mad = MAD(highest_groups, coords, 3)
+
+    for idx in range(remove_coords[1].shape[0]):
+        # these indexes are used to set these values into -111111 (ndv)
+        r_idx = remove_coords[1][idx]
+        highest_groups[r_idx] = -111111
+
+    # get the max elevation
+    max_elev = np.max(highest_groups)
+    update_dem[update_dem > max_elev] = -111111
+    # convert to bathymetry -> Hmax - elevation
+    update_dem[update_dem != -111111] = max_elev - update_dem[update_dem != -111111]
+    # get the bathymetry
+    dbm = copy.deepcopy(update_dem)
+    del update_dem
+    print("The data have processed, and the maximum elevation selected is: %.4f" % max_elev)
+
+    # if these processed raster needed to output, if output, it will add with "_RMDB_MAXE_XXXXX(max elevation).tif"
+    if is_output:
+        if PATH is None:
+            update_rhos_path = update_rhos_path + '_RMDB_MAXE_' + str(round(max_elev, 4)) + '.tif'
+        else:
+            if not os.path.exists(PATH):
+                os.mkdir(PATH)
+            update_rhos_path = PATH + '/' + update_rhos_path.split('/')[-1] + '_RMDB_MAXE_' + \
+                               str(round(max_elev, 4)) + '.tif'
+        # this data contain [R: rhos M: mask, D: DtCM, B: Bathymetry] -> RMDB
+        raster_output(update_rhos_path, [rhos, update_b8mask, update_dt, dbm], extent=extent, proj=proj)
+
+    else:
+        return rhos, update_b8mask, update_dt, dbm, extent, proj
 ```
