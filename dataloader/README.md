@@ -15,6 +15,7 @@ This function has 8 parameters that need to be manual set, including: <br>
 - *nan_filter*: thether perform interpolation for those invalud pixels, default is True.<br>
 - *is_output*: thether output the processed raster into a raster (we recommend this since the processed raster can be stored and then use them directly).<br>
 - *PATH*: the path for output processed raster.<br><br>
+
 2). Loading L2A imagery raster, DEM raster, mask raster: <br>
 ```
     rhos, elev, extent, proj = load_rhos_gt(raster_path, dem_path, mask_path, nan_filter=nan_filter)
