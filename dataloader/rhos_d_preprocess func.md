@@ -54,7 +54,7 @@ The b8mask is the WLM and b8mask is the DtCM (b8mask_dt).<br><br>
     update_dem[update_b8mask == 0] = elev[update_b8mask == 0]
 ```
 
-7). Perfoming MAD on the updated DEM to remove some abnormal pixels in the map. 
+7). Perfoming MAD on the top *n* samples in the updated DEM to remove some abnormal pixels in the map. 
 ```
     # get the valid gts, as a sequence
     valid_gts = update_dem[update_dem != -111111]
