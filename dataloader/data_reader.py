@@ -85,6 +85,7 @@ def padding_function(rhos, mask, rotate_radius, max_scale_factor, interpolated_v
         if interpolated_v is not None:
             padded_v = interpolated_v[idx]
         else:
+            # here, we using the mimimum of the bottomest 100000 pixels as the constant value to fill those invalid pixels that not covered by mask.
             padded_v = np.min(b[candidate_coords])
         # padding the rhos tensor
         padded = np.pad(b, ((rotate_radius * max_scale_factor, rotate_radius * max_scale_factor),
