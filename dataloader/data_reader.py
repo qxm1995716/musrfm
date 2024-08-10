@@ -107,6 +107,7 @@ def padding_function(rhos, mask, rotate_radius, max_scale_factor, interpolated_v
 
 
 #@jit(forceobj=True)
+# padded with the mean of the bottomest 100000 pixels in the B8 bands.
 def padding_function_original(rhos, mask, rotate_radius, max_scale_factor, interpolated_v=None):
     k = -111112  # here, the k is different for ndv (-111111)
     padded_rhos = np.ones([rhos.shape[0] + 2 * rotate_radius * max_scale_factor,
@@ -116,6 +117,7 @@ def padding_function_original(rhos, mask, rotate_radius, max_scale_factor, inter
     B8 = rhos[:, :, 7]
     selected_rhos = B8[B8 > 0]
     selected_rhos = np.sort(selected_rhos)[N - 1]
+    # get the coords for the pixels that used to calculate the padded value.
     coord = (B8 <= selected_rhos) * (B8 > 0)
 
     # here, rhos contains num_c + 2 channels, here only
