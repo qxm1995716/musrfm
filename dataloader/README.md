@@ -5,6 +5,12 @@ In our code, we use the **rhos_d_preprocess** function in basic_modules.py to pr
 ```
 def rhos_d_preprocess(raster_path, dem_path, mask_path, thres, n=500, nan_filter=True, is_output=True, PATH=None):
 ```
+This function has 8 parameters that need to be manual set, including: <br>
+---- raster_path: the path of the Sentinel-2 L2A imagery raster. <br>
+---- dem_path: the path of the DEM raster. <br>
+---- mask_path: the path of the mask raster that used to highligh the area needed to be interpolated to fill invalid pixels. <br>
+---- thres: the threshold that needed to segment the B8 band into water and land. <br>
+---- n: the number of samples that used to perform MAD to exclude abnormal pixels before transfer elevation into bathymetry. <br> 
 ```
     rhos, elev, extent, proj = load_rhos_gt(raster_path, dem_path, mask_path, nan_filter=nan_filter)
     # get the file name of raster, for further output
