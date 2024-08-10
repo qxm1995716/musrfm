@@ -18,7 +18,8 @@ This function has 8 parameters that need to be manual set, including: <br>
 ```
     rhos, elev, extent, proj = load_rhos_gt(raster_path, dem_path, mask_path, nan_filter=nan_filter)
 ```
-Here, the **load_rhos_gt** not only extract data from .tif file, but also reproject DEM (dem path) and MASK (mask_path) with the L2A (raster_paht) as reference. It located in the line 287 in the basic_module.py.
+Here, the **load_rhos_gt** not only extract data from .tif file, but also reproject DEM (dem path) and MASK (mask_path) with the L2A (raster_paht) as reference. It located in the line 287 in the basic_module.py. <br><br>
+3). Filtering the pixels that contain at least one invalid value (for safety, can be removed):
 ```
     valid_rhos = np.zeros([rhos.shape[0], rhos.shape[1]])
     # channel by channel, to find the invalid pixels
@@ -30,9 +31,12 @@ Here, the **load_rhos_gt** not only extract data from .tif file, but also reproj
     nvd_coords = (1 - valid_rhos).astype(bool)
     # set the non-valid pixels in elevations as -111111, which is used to label invalid pixels
     elev[nvd_coords] = -111111
-
-    # perform binary threshold algorithm to obtain b8mask and b8mask_dt
+```
+4). Geting the WLM (Water-Land Mask):
+```
     b8mask, b8mask_dt = B8mask(rhos, thres)
+```
+```
     # correct the coastal line dems by CORRECT_DBM function, obtain the updated elev and WLM mask
     elev, update_b8mask = CORRECT_DBM(b8mask_dt, b8mask, elev)
     # another MultiStep_MaskRefine is applied, since the WLM has been updated in above process
