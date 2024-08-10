@@ -32,7 +32,7 @@ Here, the **load_rhos_gt()** not only extract data from .tif file, but also repr
     # set the non-valid pixels in elevations as -111111, which is used to label invalid pixels
     elev[nvd_coords] = -111111
 ```
-4). Geting the WLM (Water-Land Mask):
+4). Geting the WLM (Water-Land Mask) by perform binary threshold:
 ```
     b8mask, b8mask_dt = B8mask(rhos, thres)
 ```
