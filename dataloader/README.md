@@ -1,18 +1,7 @@
 Here, the data preprocessing can be roughly devided into two parts, **Sentinel-2 L2A data processing** and **conversion from DEM to DBM**. The code for it can be found in the ./data_reader.py. <br>
-**1.Sentinel-2 L2A data processing** <br>
+**1. Sentinel-2 L2A data processing** <br><br>
 ```
 def rhos_d_preprocess(raster_path, dem_path, mask_path, thres, n=500, nan_filter=True, is_output=True, PATH=None):
-    r"""
-    :param raster_path: the path for the rhos raster -> string
-    :param dem_path: the path for the dem raster -> string
-    :param mask_path: the path for the mask raster -> string
-    :param thres: the threshold value for the b8mask function
-    :param n: the top n elevations in the processed dem are performed MAD outlier detection program -> int
-    :param nan_filter: perform interpolation for invalid pixel -> bool
-    :param is_output: do the processed data output as a file -> bool
-    :param PATH: the path for the output of processed data, if it is None, its path is the directory of raster -> string
-    :return:
-    """
     rhos, elev, extent, proj = load_rhos_gt(raster_path, dem_path, mask_path, nan_filter=nan_filter)
     # get the file name of raster, for further output
     update_rhos_path = raster_path.split('.')[0]
