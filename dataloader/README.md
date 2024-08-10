@@ -13,7 +13,7 @@ This function has 8 parameters that need to be manual set, including: <br>
 - *thres*: the threshold that needed to segment the B8 band into water and land. <br>
 - *n*: the number of samples that used to perform MAD to exclude abnormal pixels before transfer elevation into bathymetry, default is 500. <br>
 - *nan_filter*: thether perform interpolation for those invalud pixels, default is True.<br>
-- *is_output*: thether output the processed raster into a raster (we recommend this since the processed raster can be stored and then use them directly).<br>
+- *is_output*: thether output the processed raster into a raster (we recommend this since the processed raster can be directly used later).<br>
 - *PATH*: the path for output processed raster.<br><br>
 
 2). Loading L2A imagery raster, DEM raster, mask raster: <br>
