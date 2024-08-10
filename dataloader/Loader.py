@@ -35,42 +35,6 @@ class read_data(torch.utils.data.Dataset):
     def __len__(self):
         return len(self.data)
 
-
-'''
-def dataset_creator(data, batch_size, radius, is_training=True, is_distributed=False):
-    if is_training:
-        transform = tfs.Compose([
-            tfs.RandomVerticalFlip(p=0.5),
-            tfs.RandomHorizontalFlip(p=0.5),
-            tfs.RandomApply([tfs.RandomRotation(45)], p=0.5),
-            tfs.CenterCrop(2 * radius + 1)
-        ])
-    else:
-        transform = tfs.Compose([
-            tfs.CenterCrop(2 * radius + 1)
-        ])
-
-    # 此处仅读取data, bathy and info
-    dataset = read_data(data.data, data.bathy, data.info_, transform=transform)
-    # get the geo-information
-    geo_info = data.info_list
-
-    # 构建数据集
-    if is_distributed:
-        sampler = DistributedSampler(dataset)
-        dataloader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, sampler=sampler, num_workers=0,
-                                                 pin_memory=True)
-
-        return dataloader, sampler, geo_info
-
-    else:
-        dataloader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=is_training, num_workers=0,
-                                                 pin_memory=True)
-
-        return dataloader, geo_info
-'''
-
-
 class dataset_creator():
     def __init__(self, data, batch_size, radius, is_training, is_distributed=False):
         super(dataset_creator, self).__init__()
