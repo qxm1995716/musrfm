@@ -2,7 +2,7 @@ Here, the data preprocessing can be roughly devided into two parts, **Sentinel-2
 
 In our code, we use the **rhos_d_preprocess** function in basic_modules.py to process the raw L2A data and then save them for further usage.  This function contains both **Sentinel-2 L2A data processing** and **conversion from DEM to DBM** two parts. <br><br>
 **1. rhos_d_preprocess function**<br><br>
-1). defination: <br>
+1). Defination <br>
 ```
 def rhos_d_preprocess(raster_path, dem_path, mask_path, thres, n=500, nan_filter=True, is_output=True, PATH=None):
 ```
@@ -14,13 +14,13 @@ This function has 8 parameters that need to be manual set, including: <br>
 - *n*: the number of samples that used to perform MAD to exclude abnormal pixels before transfer elevation into bathymetry, default is 500. <br>
 - *nan_filter*: thether perform interpolation for those invalud pixels, default is True.<br>
 - *is_output*: thether output the processed raster into a raster (we recommend this since the processed raster can be stored and then use them directly).<br>
-- *PATH*: the path for output processed raster.<br>
+- *PATH*: the path for output processed raster.<br><br>
+2). Loading L2A imagery raster, DEM raster, mask raster: <br>
 ```
     rhos, elev, extent, proj = load_rhos_gt(raster_path, dem_path, mask_path, nan_filter=nan_filter)
-    # get the file name of raster, for further output
-    update_rhos_path = raster_path.split('.')[0]
-    # the valid_rhos is used to construct a bool mask for invalid pixels, if there is an abnormal value in one pixel,
-    # then this pixel will be marked as invalid
+```
+
+```
     valid_rhos = np.zeros([rhos.shape[0], rhos.shape[1]])
     # channel by channel, to find the invalid pixels
     for iidx in range(rhos.shape[-1]):
