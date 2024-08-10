@@ -1,5 +1,3 @@
-Here, the data preprocessing can be roughly devided into two parts, **Sentinel-2 L2A data processing** and **conversion from DEM to DBM**. The code for it can be found in the ./data_reader.py. <br><br>
-
 In our code, we use the **rhos_d_preprocess** function in basic_modules.py to process the raw L2A data and then save them for further usage.  This function contains both **Sentinel-2 L2A data processing** and **conversion from DEM to DBM** two parts. <br><br>
 **1. rhos_d_preprocess()**<br><br>
 1). Defination <br>
