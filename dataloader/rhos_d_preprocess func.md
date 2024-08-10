@@ -75,7 +75,7 @@ The b8mask is the WLM and b8mask is the DtCM (b8mask_dt).<br><br>
         r_idx = remove_coords[1][idx]
         highest_groups[r_idx] = -111111
 ```
-8). Obtaining the max elevation (<sub>H</sub>L) in the filtered DEM.
+8). Obtaining the max elevation (<sub>L</sub>H) in the filtered DEM.
 ```
     # get the max elevation
     max_elev = np.max(highest_groups)
