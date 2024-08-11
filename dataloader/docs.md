@@ -87,3 +87,7 @@ The b8mask is the WLM and b8mask is the DtCM (b8mask_dt).<br><br>
     del update_dem
     print("The data have processed, and the maximum elevation selected is: %.4f" % max_elev)
 ```
+Here, we provide a templete for how to use this function to process data and save them.
+```
+
+```
