@@ -39,5 +39,5 @@ Here, the means of various parameters are as follows. <br>
 - *patch_size*: the shape of the patch of MCHR. <br>
 - *mb_res*: the resolution of all branches. <br>
 - *basic_res*: the resolution of input multi-spectral imagery. <br>
-- *data_dict*: actually this is the tmp_dict. <br>
+- *data_dict*: actually this is the tmp_dict. <br><br>
 This function will return an DataReadIn calss, containing all used data. 
