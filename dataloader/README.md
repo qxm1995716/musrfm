@@ -27,8 +27,8 @@ trains_container = DataReadIn(train_files, process_type='RMDB', c_num=12, is_dbm
 ```
 <br>
 Here, the means of various parameters are: <br>
-- *train_files* : the rasters that processed by step 1. <br> 
-- *process_type*: a flag for data, here we only use 'RMDB', which means that the data contained in the raster are [Reflectances (R), Mask of water-land (M), Distance to coast (D), Bathytmery (B)]. <br>
+-*train_files* : the rasters that processed by step 1. <br> 
+-*process_type*: a flag for data, here we only use 'RMDB', which means that the data contained in the raster are [Reflectances (R), Mask of water-land (M), Distance to coast (D), Bathytmery (B)]. <br>
 'c_num': the number of channels of reflectances. <br>
 'is_dbm': a bool value to indicate that whether the DBM is included in the input rasters. <br>
 'is_random_shift': whether random shift the coordinate of centeral point of each patch where perform MCHR.<br>
