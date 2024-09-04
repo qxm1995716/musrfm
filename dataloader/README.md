@@ -3,4 +3,11 @@ Since the obtained Sentinel-2 L2A imagery from GEE can have some invalid pixels,
 
 This step is finished by **rhos_d_preprocess** function in **basic_modules.py**, and its detailed explaination is located in the docs.md. Here, we provide a templete for process a L2A imagery and its corresponding DEM data.
 
-
+```
+raster_path = './l2a_imagery.tif'  # the input L2A imagery data.
+dem_path = './dem_data.tif'  # the input DEM data.
+mask_path = './mask_path.tif'  # the mask for the area that need bilinear interpolation function to inpaint the invalid pixels
+# for other parameters, you can find its meaning in docs.md. 
+rhos_d_preprocess(raster_path, dem_path, mask_path, thres, n=500, nan_filter=True, is_output=True, PATH=None)
+# after this, you can find the output raster in the PATH dict, if the is_output is False, this function will return processed data, which you can found in the code. 
+```
