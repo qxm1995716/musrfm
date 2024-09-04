@@ -22,12 +22,13 @@ DataReadIn(path_list, process_type, c_num=12, tmp_dict=None, is_dbm=True, max_ba
 We take the code of loading training dataset as a example to explain this function. 
 ```
 trains_container = DataReadIn(train_files, process_type='RMDB', c_num=12, is_dbm=True, is_random_shift=False,            
-                              random_shift_scale=args.random_shift_scale, tmp_dict=tmp_train_path, stride=args.stride,                                        max_bathy=args.max_depth, patch_size=args.patch_size, mb_res=args.mb_res, basic_res=10, 
+                              random_shift_scale=args.random_shift_scale, tmp_dict=tmp_train_path, stride=args.stride,
+                              max_bathy=args.max_depth, patch_size=args.patch_size, mb_res=args.mb_res, basic_res=10, 
                               data_dict=tmp_train_path)
 ```
 <br>
 Here, the means of various parameters are as follows. <br>
-- *train_files* : the rasters that processed by step 1. <br> 
+- *train_files*: the rasters that processed by step 1. <br> 
 - *process_type*: a flag for data, here we only use 'RMDB', which means that the data contained in the raster are [Reflectances (R), Mask of water-land (M), Distance to coast (D), Bathytmery (B)]. <br>
 'c_num': the number of channels of reflectances. <br>
 'is_dbm': a bool value to indicate that whether the DBM is included in the input rasters. <br>
