@@ -26,11 +26,18 @@ trains_container = DataReadIn(train_files, process_type='RMDB', c_num=12, is_dbm
                               max_bathy=args.max_depth, patch_size=args.patch_size, mb_res=args.mb_res, basic_res=10, 
                               data_dict=tmp_train_path)
 ```
-<br> 
 Here, the means of various parameters are as follows. <br>
-*train_files*  the rasters that processed by step 1. <br> 
+- *train_files*: the rasters that processed by step 1. <br> 
 - *process_type*: a flag for data, here we only use 'RMDB', which means that the data contained in the raster are [Reflectances (R), Mask of water-land (M), Distance to coast (D), Bathytmery (B)]. <br>
-'c_num': the number of channels of reflectances. <br>
-'is_dbm': a bool value to indicate that whether the DBM is included in the input rasters. <br>
-'is_random_shift': whether random shift the coordinate of centeral point of each patch where perform MCHR.<br>
-'random_shift_scale': 
+- *c_num*: the number of channels of reflectances. <br>
+- *is_dbm*: a bool value to indicate that whether the DBM is included in the input rasters. <br>
+- *is_random_shift*: whether random shift the coordinate of centeral point of each patch where perform MCHR.<br>
+- *random_shift_scale*: the scale for random shift of central coordinates. <br>
+- *tmp_dict*: the temporary dict to save padded raster, this is to avoid the MCHR exceeding the edge of input raster, while the scale is depend on the max range of MCHR. <br>
+- *stride*: the stride step for the window shift. <br>
+- *max_bathy*: the maximum bathymetry value. <br>
+- *patch_size*: the shape of the patch of MCHR. <br>
+- *mb_res*: the resolution of all branches. <br>
+- *basic_res*: the resolution of input multi-spectral imagery. <br>
+- *data_dict*: actually this is the tmp_dict. <br>
+This function will return an DataReadIn calss, containing all used data. 
