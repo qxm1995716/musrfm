@@ -14,7 +14,7 @@ rhos_d_preprocess(raster_path, dem_path, mask_path, thres, n=500, nan_filter=Tru
 ```
 
 # Step 2 <br>
-Then, the **DataReadIn** function in data_reader.py is used to process the obtained raster above, and perform further process. This function is used before the DataLoader function in the training.py or fine-tuning.py, and its defination shown as follows:
+Then, the **DataReadIn** function in data_reader.py is used to process the obtained raster above, and perform further process, and the most importantly, the multiple resulotion scale patches obtained by MCHR. This function is used before the DataLoader function in the training.py or fine-tuning.py, and its defination shown as follows:
 ```
 DataReadIn(path_list, process_type, c_num=12, tmp_dict=None, is_dbm=True, max_bathy=25, stride=10, is_random_shift=True,
            random_shift_scale=4, patch_size=15, mb_res=np.array([10, 30, 90, 270, 810]), basic_res=10, data_dict=None) 
@@ -42,4 +42,4 @@ Here, the means of various parameters are as follows. <br>
 - *data_dict*: actually this is the tmp_dict. <br><br>
 
 # Step 3 <br>
-
+The dataloader 
