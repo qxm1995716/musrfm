@@ -40,4 +40,6 @@ Here, the means of various parameters are as follows. <br>
 - *mb_res*: the resolution of all branches. <br>
 - *basic_res*: the resolution of input multi-spectral imagery. <br>
 - *data_dict*: actually this is the tmp_dict. <br><br>
-This function will return an DataReadIn calss, containing all used data. 
+
+# Step 3 <br>
+
