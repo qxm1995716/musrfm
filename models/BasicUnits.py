@@ -1,6 +1,9 @@
 # coding: utf-8
 import torch.nn as nn
 import torch
+# here, the models mainly comes from the ResNet (He et al., 2016), where the official implement can be found on
+# https://github.com/facebookarchive/fb.resnet.torch?tab=readme-ov-file, or you can find the pytorch implemention of 
+# ResNet from timm lib. 
 
 
 class ResBasicBlock(nn.Module):
