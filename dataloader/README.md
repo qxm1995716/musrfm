@@ -22,8 +22,8 @@ DataReadIn(path_list, process_type, c_num=12, tmp_dict=None, is_dbm=True, max_ba
 <br>
 We take the code of loading training dataset as a example to explain this function.
 ```
-trains_container = DataReadIn(train_files, process_type='RMDB', c_num=12, is_dbm=True, is_random_shift=False, random_shift_scale=args.random_shift_scale, 
-                              tmp_dict=tmp_train_path, stride=args.stride, max_bathy=args.max_depth, patch_size=args.patch_size, mb_res=args.mb_res, basic_res=10, 
+trains_container = DataReadIn(train_files, process_type='RMDB', c_num=12, is_dbm=True, is_random_shift=False,            
+                              random_shift_scale=args.random_shift_scale, tmp_dict=tmp_train_path, stride=args.stride,                                        max_bathy=args.max_depth, patch_size=args.patch_size, mb_res=args.mb_res, basic_res=10, 
                               data_dict=tmp_train_path)
 ```
 Here, the means of various parameters are: <br>
