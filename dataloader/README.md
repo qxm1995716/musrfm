@@ -5,7 +5,7 @@ This step is finished by **rhos_d_preprocess** function in **basic_modules.py**,
 **HIGHLIGHTS: In our code, the nondata value is -111111.0, please keep mind on this, especially when create raster of mask or dem, to avoid any unpredicted bugs.**
 
 ```
-raster_path = './l2a_imagery.tif'  # the input L2A imagery data.
+raster_path = './l2a_imagery.tif'  # the input L2A imagery data. 
 dem_path = './dem_data.tif'  # the input DEM data.
 mask_path = './mask_path.tif'  # the mask for the area that need bilinear interpolation function to inpaint the invalid pixels
 # for other parameters, you can find their meaning and function in docs.md. 
@@ -20,7 +20,7 @@ DataReadIn(path_list, process_type, c_num=12, tmp_dict=None, is_dbm=True, max_ba
            random_shift_scale=4, patch_size=15, mb_res=np.array([10, 30, 90, 270, 810]), basic_res=10, data_dict=None) 
 ```
 <br>
-We take the code of loading training dataset as a example to explain this function.
+We take the code of loading training dataset as a example to explain this function. <br>
 ```
 trains_container = DataReadIn(train_files, process_type='RMDB', c_num=12, is_dbm=True, is_random_shift=False,            
                               random_shift_scale=args.random_shift_scale, tmp_dict=tmp_train_path, stride=args.stride,                                        max_bathy=args.max_depth, patch_size=args.patch_size, mb_res=args.mb_res, basic_res=10, 
