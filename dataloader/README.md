@@ -10,7 +10,7 @@ dem_path = './dem_data.tif'  # the input DEM data.
 mask_path = './mask_path.tif'  # the mask for the area that need bilinear interpolation function to inpaint the invalid pixels
 # for other parameters, you can find their meaning and function in docs.md. 
 rhos_d_preprocess(raster_path, dem_path, mask_path, thres, n=500, nan_filter=True, is_output=True, PATH=None)
-# after this, you can find the output raster in the PATH dict, if the is_output is False, this function will return processed data, which you can found in the code. 
+# after this, you can find the output raster in the PATH dict, if the is_output is False, this function will return processed data, which you can find in the code. 
 ```
 
 # Step 2 <br>
@@ -42,4 +42,9 @@ Here, the means of various parameters are as follows. <br>
 - *data_dict*: actually this is the tmp_dict. <br><br>
 
 # Step 3 <br>
-The dataloader 
+The defination of this dataset_creator is as follows. In the training.py, you can find this function after DataReadIn, as follows. 
+```
+train_datasets = dataset_creator(trains_container, batch_size=args.batch_size, radius=args.radius,
+                                 is_training=True, is_distributed=False)
+```
+The trains_container comes from step 2, which is the sampled hierarchical patches. 
