@@ -184,35 +184,34 @@ class MRNet(nn.Module):
             ks_3 = kernel_size
             ks_4 = kernel_size
 
-        # 共计三层MBR构成三层stage
-        # 进入第一个MRB
+        # STAGE 1
         f_c = 0
         self.MRB_Stage_1 = MRB(branch_input_channels, branch_channels[0], branch_layers[0], block_func, ks_1,
                                resolutions=resolution, act_func=act_func, norm_func=norm_func)
         branch_input_channels = self.MRB_Stage_1.branch_out_channels
         f_c = f_c + branch_input_channels[0]
 
-        # 进入第二个MRB
+        # STAGE 2
         self.MRB_Stage_2 = MRB(branch_input_channels, branch_channels[1], branch_layers[1], block_func, ks_2,
                                resolutions=resolution, act_func=act_func, norm_func=norm_func)
         branch_input_channels = self.MRB_Stage_2.branch_out_channels
         f_c = f_c + branch_input_channels[0]
 
-        # 进入第三个MRB
+        # STAGE 3
         self.MRB_Stage_3 = MRB(branch_input_channels, branch_channels[2], branch_layers[2], block_func, ks_3,
                                resolutions=resolution, act_func=act_func, norm_func=norm_func)
 
         branch_input_channels = self.MRB_Stage_3.branch_out_channels
         f_c = f_c + branch_input_channels[0]
 
-        # 第四层MRB
+        # STAGE 4
         self.MRB_Stage_4 = MRB(branch_input_channels, branch_channels[3], branch_layers[3], block_func, ks_4,
                                resolutions=resolution, act_func=act_func, norm_func=norm_func)
 
         branch_input_channels = self.MRB_Stage_4.branch_out_channels
         f_c = f_c + branch_input_channels[0]
 
-        # 融合三层特征构建的输出头
+        # the output head, namely HFCM. 
         msc_unit = []
         downsample = nn.Sequential(
             nn.Conv2d(f_c, f_c // 3, kernel_size=1, stride=1, padding=0, bias=False),
@@ -236,7 +235,12 @@ class MRNet(nn.Module):
         self.relu_layer = nn.ReLU()
 
     def forward(self, x, add_dt=False, add_wl=False, is_exp=False):
-        # 读取不同分辨率分支的数据
+        r'''
+        x -> tensor(B, C, H, W): the sampled patches by MCHR, containing 5 patches in our setting, and here the C is 70 (5 * 14, while the 14 is composed of 12 channels of L2A, DtCM and WLM)
+        add_dt -> bool: whether add DtCM in the input.
+        add_wl -> bool: whether add WLM in the input. 
+        is_exp -> bool: if true, the output is b = e^y, else b = relu(y). 
+        '''
         interv = x.shape[1] // 5
         r10 = x[:, :interv, :, :]
         r30 = x[:, interv: 2 * interv, :, :]
@@ -264,7 +268,7 @@ class MRNet(nn.Module):
         r270 = r270[:, idxs, :, :]
         r810 = r810[:, idxs, :, :]
 
-        # 依次通过三个stage
+        # 依次通过4个stage, 并再每个stage后更新除了RES-810外的分支
         # stage 1
         f1_r10, f1_r30, f1_r90, f1_r270, f1_r810 = self.MRB_Stage_1(r10, r30, r90, r270, r810)
         # stage 2
