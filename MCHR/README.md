@@ -11,10 +11,10 @@ This function need 5 input parameters: <br>
 *mb_res*: the resolutions of multiple branches, here is [10, 30, 90, 270, 810]. <br>
 *radius*: the radius of the cropped patch, and the height and width of each patch are (2 * radius + 1). <br>
 *ms_ratio*: the ratio of used threads to perform mchr, its range is (0, 1], the less the value, the less cpu source is used while longer time the sampler will cost. <br><br>
-**How to use it**
+**How to use it**<br>
 For window os, the S2R10_MCHR.pyd file need to be set at the path *./Anaconda/envs/YourInterpreter/Lib/site-packages/*, and then you can use it in the code once this interpreter is activated. <br>
 For ubuntu os, THE add the S2R10_MCHR.so to the dictory of main function, for example, for this repos, the path of S2R10_MCHR.so is ./S2R10_MCHR.so, as the same of training.py. <br> 
-It should be noted that, the name of both files should not change, that is, S2R10_MCHR.**. <br>
+It should be noted that, the name of both files should not change, that is, S2R10_MCHR.xxx . <br>
 **Complie it by yourself**<br> 
 Since the python version is locked, if you want to use it in interpreter of different python version, you need complie it by yourself with the boost lib. Here we only provide the templete of complie it by gcc in ubuntu os, shown as follows:
 ```
