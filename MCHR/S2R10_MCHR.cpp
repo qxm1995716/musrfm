@@ -19,36 +19,36 @@ float* Pixel_Wise_Sampler(int row, int column, int radius, int* HWC, int res_num
 	int width = HWC[1];
 	int channel = HWC[2];
 
-	// ¸ù¾İrºÍcÈ·¶¨²ÉÑùµãÖĞĞÄ
+	// æ ¹æ®rå’Œcç¡®å®šé‡‡æ ·ç‚¹ä¸­å¿ƒ
 	int ws = 2 * radius + 1;
 
 	float* sample_patch = new float[ws * ws * channel * res_num];
 
-	// ³õÊ¼»¯Ö¸ÕëÊı×é£¬ÀíÂÛÉÏ´Ë´¦²¢²»ĞèÒª¸Ã²½Öè£¬ÒòÎªºóÃæ»áÖØĞÂ¸³Öµ
+	// åˆå§‹åŒ–æŒ‡é’ˆæ•°ç»„ï¼Œç†è®ºä¸Šæ­¤å¤„å¹¶ä¸éœ€è¦è¯¥æ­¥éª¤ï¼Œå› ä¸ºåé¢ä¼šé‡æ–°èµ‹å€¼
 	for (int m = 0; m < ws * ws * channel * res_num; m++)
 	{
 		sample_patch[m] = 0;
 	}
 
-	// Ê×ÏÈÊÇ¼ÆËã·Ö±æÂÊ£¬ÓÃÓÚÈ·¶¨²Ã¼ô·¶Î§
+	// é¦–å…ˆæ˜¯è®¡ç®—åˆ†è¾¨ç‡ï¼Œç”¨äºç¡®å®šè£å‰ªèŒƒå›´
 	for (int res_idx = 0; res_idx < res_num; res_idx++) {
-		// »ù´¡Í¼µÄ·Ö±æÂÊÎª10Ã×£¬Òò´Ë³ıÒÔ10×ªÎªÏñËØÊıÁ¿
+		// åŸºç¡€å›¾çš„åˆ†è¾¨ç‡ä¸º10ç±³ï¼Œå› æ­¤é™¤ä»¥10è½¬ä¸ºåƒç´ æ•°é‡
 		int res = resolutions[res_idx] / 10;
 
-		// ÒÀ´Î¼ÆËã¸÷¸ö¿éµÄ·¶Î§
+		// ä¾æ¬¡è®¡ç®—å„ä¸ªå—çš„èŒƒå›´
 		for (int r = -radius; r < radius + 1; r++) {
 			for (int c = -radius; c < radius + 1; c++) {
-				// È·¶¨µ±Ç°·¶Î§£¬¼´×ó-ÉÏµãµÄºá×İ×ø±ê£¬ÔòÕû¸ö·¶Î§²ÉÑù·¶Î§Êµ¼ÊÉÏ¾ÍÊÇ -> [sub_ldcr: sub_ldcr + res, sub_ldcc: sub_ldcc + res]
+				// ç¡®å®šå½“å‰èŒƒå›´ï¼Œå³å·¦-ä¸Šç‚¹çš„æ¨ªçºµåæ ‡ï¼Œåˆ™æ•´ä¸ªèŒƒå›´é‡‡æ ·èŒƒå›´å®é™…ä¸Šå°±æ˜¯ -> [sub_ldcr: sub_ldcr + res, sub_ldcc: sub_ldcc + res]
 				int sub_ldcr = row + r * res - (res - 1) / 2;
 				int sub_ldcc = column + c * res - (res - 1) / 2;
 
 				for (int cd = 0; cd < channel; cd++) {
-					// Í¨µÀÊıÁ¿£¬Öğ¸öÍ¨µÀ¼ÆËã£¬´Ë´¦¼Æ»®µÄpatchÓ¦µ±ÊÇ[res_num, channel, ws, ws]
-					// µ±Ç°µãÔÚpatchÖĞµÄÒ»Î¬×ø±ê
+					// é€šé“æ•°é‡ï¼Œé€ä¸ªé€šé“è®¡ç®—ï¼Œæ­¤å¤„è®¡åˆ’çš„patchåº”å½“æ˜¯[res_num, channel, ws, ws]
+					// å½“å‰ç‚¹åœ¨patchä¸­çš„ä¸€ç»´åæ ‡
 					int patch_idx = ws * ws * (channel * res_idx + cd) + (r + radius) * ws + (c + radius);
 					double count = 0;
 
-					// ÔÚµ±Ç°Õâ¸ö[res, res]¿éÄÚ¼ÆËã¾ùÖµ£¬×¢ÒâÕâ´ÎÓÃµÄdoubleĞÍ£¬ÊÇÎªÁË·ÀÖ¹Ò»Ğ©¸¡µã¼ÆËãµÄ´íÎó
+					// åœ¨å½“å‰è¿™ä¸ª[res, res]å—å†…è®¡ç®—å‡å€¼ï¼Œæ³¨æ„è¿™æ¬¡ç”¨çš„doubleå‹ï¼Œæ˜¯ä¸ºäº†é˜²æ­¢ä¸€äº›æµ®ç‚¹è®¡ç®—çš„é”™è¯¯
 					for (int sr = 0; sr < res; sr++) {
 						for (int sc = 0; sc < res; sc++) {
 							int index = height * width * cd + (sub_ldcr + sr) * width + sub_ldcc + sc;
@@ -56,7 +56,7 @@ float* Pixel_Wise_Sampler(int row, int column, int radius, int* HWC, int res_num
 							count += v;
 						}
 					}
-					// ¸³Öµ
+					// èµ‹å€¼
 					sample_patch[patch_idx] = (float)(count / (res * res));
 				}
 			}
@@ -72,10 +72,8 @@ float* convert_float_3d_to_1d(np::ndarray& arr) {
 	int height = arr.shape(0);
 	int width = arr.shape(1);
 	int channel = arr.shape(2);
-	printf("TAG1\n");
 	float* data = reinterpret_cast<float*>(arr.get_data());
 	float* sorted_data = new float[height * width * channel];
-	printf("TAG2\n");
 
 	int count = 0;
 
@@ -94,7 +92,7 @@ float* convert_float_3d_to_1d(np::ndarray& arr) {
 
 	//delete[] data;
 	//data = NULL;
-	printf("TAG3\n");
+	// printf("TAG3\n");
 	return sorted_data;
 }
 
@@ -180,7 +178,7 @@ np::ndarray float_ptr_to_3d_ndarray(float* data, int dim_x, int dim_y, int dim_z
 
 	np::dtype dt = np::dtype::get_builtin<float>();
 	np::ndarray array = np::from_data(data, dt, shape, strides, p::object());
-	// Ê¹ÓÃ PyCapsule ´´½¨Ò»¸ö owner ¶ÔÏó
+	// ä½¿ç”¨ PyCapsule åˆ›å»ºä¸€ä¸ª owner å¯¹è±¡
 	PyObject* capsule = PyCapsule_New(data, NULL, [](PyObject* capsule) {
 		float* data = static_cast<float*>(PyCapsule_GetPointer(capsule, NULL));
 		delete[] data;
@@ -201,7 +199,7 @@ np::ndarray RC_convert(int* rc_pair)
 
 	np::dtype dt = np::dtype::get_builtin<int>();
 	np::ndarray array = np::from_data(rc_pair, dt, shape, strides, p::object());
-	// Ê¹ÓÃ PyCapsule ´´½¨Ò»¸ö owner ¶ÔÏó
+	// ä½¿ç”¨ PyCapsule åˆ›å»ºä¸€ä¸ª owner å¯¹è±¡
 	PyObject* capsule = PyCapsule_New(rc_pair, NULL, [](PyObject* capsule) {
 		int* data = static_cast<int*>(PyCapsule_GetPointer(capsule, NULL));
 		delete[] data;
@@ -233,16 +231,13 @@ void each_thread(int start_idx, int end_idx, int radius, float* map, int* HWC, i
 }
 
 
-p::tuple S2R10_MCHR(np::ndarray& map, np::ndarray& coords, np::ndarray& resolutions, int Radius, int ms_ratio) {
+p::tuple S2R10_MCHR(np::ndarray& map, np::ndarray& coords, np::ndarray& resolutions, int Radius, float ms_ratio) {
 	p::list PList;
 	p::list RC_List;
 
 	float* m = convert_float_3d_to_1d(map);
-	printf("TAG1");
 	int* c = convert_int_2d_to_1d(coords);
-	printf("TAG2");
 	int* rs = convert_int_1d_to_1d(resolutions);
-	printf("TAG3");
 	
 	int* HWC = GetShape3d(map);
 	int* C2 = GetShape2d(coords);
@@ -253,9 +248,10 @@ p::tuple S2R10_MCHR(np::ndarray& map, np::ndarray& coords, np::ndarray& resoluti
 	int nums = C2[0];
 	
 	const int num_threads = std::thread::hardware_concurrency();
-	//const int activate_threads = (const int)num_threads * ms_ratio;
+	const int activate_threads = (const int)((float)num_threads * ms_ratio);
+	printf("The number of used threads is: %d [total: %d]. \n", activate_threads, num_threads);
 	const int iters = nums;
-	int work_per_thread = iters / num_threads;
+	int work_per_thread = iters / activate_threads;
 
 	std::mutex patches_mutex;
 	std::vector<float*> patches;
@@ -264,10 +260,10 @@ p::tuple S2R10_MCHR(np::ndarray& map, np::ndarray& coords, np::ndarray& resoluti
 
 	printf("The total number of patches is: %d. \n", nums);
 	
-	for (int thread_idx = 0; thread_idx < num_threads; thread_idx++)
+	for (int thread_idx = 0; thread_idx < activate_threads; thread_idx++)
 	{
 		int start = thread_idx * work_per_thread;
-		int end = (thread_idx == num_threads - 1) ? iters : (thread_idx + 1) * work_per_thread;
+		int end = (thread_idx == activate_threads - 1) ? iters : (thread_idx + 1) * work_per_thread;
 		// parameter-> int start_idx, int end_idx, int radius, float* map, int* HWC, int* resolutions, int* RN, int* valid_coords,
 		//             std::vector<float*>& results, std::mutex& result_mut
 		threads.emplace_back(each_thread, start, end, Radius, m, HWC, rs, RN, c, std::ref(patches), std::ref(patches_mutex), std::ref(ROWCOL));
@@ -291,7 +287,7 @@ p::tuple S2R10_MCHR(np::ndarray& map, np::ndarray& coords, np::ndarray& resoluti
 		PList.append(element);
 	}
 	
-	// Çå¿ÕÄÚ´æ
+	// æ¸…ç©ºå†…å­˜
 	delete[] m;
 	m = NULL;
 	delete[] c;
