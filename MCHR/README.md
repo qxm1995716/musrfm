@@ -16,7 +16,7 @@ For window os, the S2R10_MCHR.pyd file need to be set at the path *./Anaconda/en
 For ubuntu os, moving the S2R10_MCHR.so to the dictory of main function, for example, for this repos, the path of S2R10_MCHR.so is ./S2R10_MCHR.so, as the same of training.py. <br><br>
 It should be noted that, the name of both files should not change, that is, S2R10_MCHR.xxx . <br><br>
 **Complie it by yourself**<br> 
-Since the python version is locked, if you want to use it in interpreter of different python version, you need complie it by yourself with the boost lib. Here we only provide the templete of complie it by gcc in ubuntu os, shown as follows:
+Since the python version is locked, if you want to use it in interpreter of different python version, you need complie it by yourself with the boost lib. Here we only provide the templete of complie it by g++ in ubuntu os, shown as follows:
 ```
 g++ -shared -fPIC -O2 -I/usr/include/python3.8 -I/usr/include/boost S2R10_MCHR.cpp -o S2R10_MCHR.so -lboost_python38 -lboost_numpy38
 ```
