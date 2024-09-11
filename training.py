@@ -158,6 +158,9 @@ def main_train(args, Log):
 
     # loading train and test datasets.
     patch_size = 2 * args.radius + 1
+    # why we set the expanded_radius? because when we perform random roatation for data enhancement, if the size of 
+    # patch is patch_size, then there will have some invalid pixels in the roatated patches. So we first expand the
+    # range of shape and then perform central crop function to get the final input.
     expanded_radius = math.ceil(patch_size // 2 * math.sqrt(2))
     while (2 * expanded_radius + 1) % 3 != 0:
         expanded_radius += 1
