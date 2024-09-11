@@ -1,7 +1,7 @@
 import copy
 from dataloader.data_reader import DataReadIn
 from dataloader.Loader import dataset_creator
-from models.MRFMSC_V2 import MRNet
+from models.MRFM import MRNet
 from utils.loss_func import MaskedMSE
 from utils.tools import bms_create, bms_write, bms_embedding
 from utils.metrics import non_overlap_mse
