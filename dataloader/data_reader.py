@@ -14,6 +14,7 @@ import S2R10_MCHR
 from joblib import dump, load
 import shutil
 
+# the bathy_valid_ratio set to 0 when perform fine-tuning, and set to 0.1 when training from scratch. 
 configuration = {'thres': 0.11, 'n': 500, 'fill': True, 'bathy_valid_ratio': 0}
 
 # os.environ['PROJ_LIB'] = r'D:\Anaconda\envs\acolite\Lib\site-packages\pyproj\proj_dir\share\proj'
