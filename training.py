@@ -160,16 +160,17 @@ def main_train(args, Log):
     patch_size = 2 * args.radius + 1
     # why we set the expanded_radius? because when we perform random roatation for data enhancement, if the size of 
     # patch is patch_size, then there will have some invalid pixels in the roatated patches. So we first expand the
-    # range of shape and then perform central crop function to get the final input.
+    # range of patch to sqrt(2) * patchsize and then perform central crop function to get the final input.
     expanded_radius = math.ceil(patch_size // 2 * math.sqrt(2))
     while (2 * expanded_radius + 1) % 3 != 0:
         expanded_radius += 1
-    #
+    
     train_path = './data/train.txt'
     train_files = rm_filelist(train_path)
     test_path = './data/test.txt'
     test_files = rm_filelist(test_path)
-
+    # here, we create two temporay dictory to save expanded raster, here EPR means expanded radius, MR means the 
+    # maximum resolution (the last element in the mb_res). 
     tmp_train_path = './PFOTMP_TRAIN_EPR' + str(expanded_radius) + '_MR' + str(args.mb_res[-1])  # PFO for padding_function_original
     tmp_test_path = './PFOTMP_TEST_EPR' + str(expanded_radius) + '_MR' + str(args.mb_res[-1])
 
