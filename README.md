@@ -1,6 +1,6 @@
 # MuSRFM
 
-The official implementation code of "MuSRFM: Multiple Scale Resolution Fusion Based Precise and Robust Satellite Derived Bathymetry Model for Island’s Nearshore Shallow Water Regions Using Sentinel-2 Multi-Spectral Imagery". <br><br>
+The official implementation code of "MuSRFM: Multiple Scale Resolution Fusion Based Precise and Robust Satellite Derived Bathymetry Model for Island’s Nearshore Shallow Water Regions Using Sentinel-2 Multi-Spectral Imagery". https://www.sciencedirect.com/science/article/pii/S0924271624003459. If you use this model, please cite this paper, thanks. <br><br>
 
 Shield: [![CC BY-NC 4.0][cc-by-nc-shield]][cc-by-nc]
 
