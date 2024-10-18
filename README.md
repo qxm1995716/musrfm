@@ -20,4 +20,4 @@ The required environment setting is as follows: <br>
 
 # Contact us
 
-If you have any question, please pose a issue on this repo, or you can contact us by email qinxm@zju.edu.cn or qinxm@sio.org.cn. 
+If you have any question, please pose a issue on this repo, or you can contact us and send the questions to qinxm@zju.edu.cn (or qinxm@sio.org.cn). 
