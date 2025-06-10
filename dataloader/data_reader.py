@@ -261,6 +261,7 @@ class DataReadIn():
                     self.file_path.append(tmp_path)
 
                 elif process_type == 'RAW_WD':
+                    '''
                     # if it is RAW_WD, then the element composed of two path, including the path for rhos and mask
                     rhos_path = element['rhos']
                     mask_path = element['mask']
@@ -278,6 +279,8 @@ class DataReadIn():
                     tmp_path = self.tmp_dict + '/' + filename + '.pkl'
                     dump({'data': data, 'bathy': None, 'info': info_}, tmp_path, protocol=3)
                     self.file_path.append(tmp_path)
+                    '''
+                    exit(-1)
 
                 else:
                     print('The process_type is un-defined, check it.')
