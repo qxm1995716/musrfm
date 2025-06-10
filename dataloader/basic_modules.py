@@ -457,3 +457,41 @@ def rhos_d_preprocess(raster_path, dem_path, mask_path, thres, n=500, nan_filter
 
     else:
         return rhos, update_b8mask, update_dt, dbm, extent, proj
+
+
+# the function for fix in-valid pixels in rhos.
+def invalid_pixels_fixed(rhos, mask, ndv):
+    num_channels = rhos.shape[-1]
+    # here, we select N samples
+    N = 100000
+    B8 = rhos[:, :, 7]  # get the B8
+    selected_rhos = B8[B8 > 0]
+    selected_rhos = np.sort(selected_rhos)[N - 1]
+    candidate_coords = (B8 <= selected_rhos) * (B8 > 0)
+    mean_v = np.ones([num_channels, ], dtype=np.float32)
+
+    # channel by channel
+    for idx in range(num_channels):
+        band = rhos[:, :, idx]
+        # determine the index of nan and ndv pixels
+        nan_c = np.isnan(band)
+        ndv_c = band == ndv
+        # concatenate these two bool matrix
+        nan_coords = np.concatenate([nan_c[:, :, None], ndv_c[:, :, None]], axis=-1)
+        # get the compact bool matrix
+        nan_coords = np.max(nan_coords, axis=-1)
+        # mask the nan_coords by bool_mask (after this, only area that need to be interpolated is true,
+        # others are false)
+        invalid_coords = nan_coords * mask
+        invalid_coords = np.where(invalid_coords is True)
+        # interpolate the invalid pixels located in the mask region
+        band = nan_interp(band, invalid_coords, 0.25, ndv=ndv)
+
+        # interpolate the pixels except mask
+        invalid_mask_out = nan_coords * (1 - mask).astype(bool)
+        interpolated_v = np.mean(band[candidate_coords])
+        band[invalid_mask_out] = interpolated_v
+        mean_v[idx] = interpolated_v
+        rhos[:, :, idx] = band
+
+    return rhos, mean_v
