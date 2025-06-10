@@ -7,7 +7,7 @@ import cv2
 from osgeo import gdal
 import numpy as np
 import os
-from dataloader.basic_modules import rhos_d_preprocess, rhos_wd_preprocess, invalid_pixels_fixed, reproject_aligned
+from dataloader.basic_modules import rhos_d_preprocess, invalid_pixels_fixed, reproject_aligned
 # currently, the function S2R10_MCHR is not stable since we rewrite it using C++ and complied with boostpython, 
 # we are working on this issue now and we will release this source code later.
 import S2R10_MCHR
