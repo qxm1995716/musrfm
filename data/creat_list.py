@@ -2,13 +2,15 @@
 Here, the format of train.txt or test.txt or inference.txt with dem is:
 rhos_path
 dem_path
+active_region_path
 mask_path
 rhos_path_1
 dem_path_1
+active_region_path_1 
 mask_path_1
 ......
 
-That is, every 3 file paths are used to construct an element.
+That is, every 4 file paths are used to construct an element.
 
 -------------------------
 
@@ -66,3 +68,4 @@ def rm_filelist(path):
             count = 0
 
     return elements
+
